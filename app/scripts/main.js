@@ -16,7 +16,6 @@ function init() {
 		console.log(o);
 	})
 	.always(function(o) {
-		console.log(o.responseText);
 		parseResponse(o.responseText);
 	});
 }
@@ -24,5 +23,22 @@ function init() {
 function parseResponse (data) {
 	var jsonData = data.substring(14, data.length-1);
  	var obj = JSON.parse(jsonData);
-	console.log(data);
+	console.log(obj);
+	createNode(obj);
+}
+
+function createNode(obj) {
+	var url = obj.photos.photo.map(createURL);
+	var targ = $('.content');
+	console.log(url);
+	url.forEach(function(elem, i, arr) {
+		$(targ).append("<img src='" + elem + "'>");
+	});
+}
+
+function createURL(elem, i, arr) {
+	var url = 'https://farm' + elem.farm + '.staticflickr.com/'
+			+ elem.server + '/' + elem.id + '_' + elem.secret
+			+ '.jpg';
+	return url;
 }
